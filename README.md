@@ -1,3 +1,4 @@
+![nsq to bigquery logo](http://i1.wp.com/eran.sandler.co.il/wp-content/uploads/2015/11/nsq-to-bigquery.png?resize=300%2C117)
 # nsq-to-bigquery
 Stream NSQ messages to Google's BigQuery using the streaming API.
 
