@@ -8,8 +8,8 @@ This is a very early version that does work but was not (yet) tested in real har
 
 ## Assumptions / Limitations:
 - Message body is a valid JSON that is a flat dictionary (only key and simple values).
-- Each message must contain data that will constitute a single row at the end.
-- BigQuery table MUST exists and the schema MUST matches the JSON being sent.
+- Each message must contain data that will constitute a single row that will go into BigQuery.
+- BigQuery table MUST exists and the schema MUST match the JSON being sent.
 - This version sends each message in its own request and does not use any batch API (yet).
 
 
