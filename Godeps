@@ -3,3 +3,4 @@ golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/jwt
 google.golang.org/api/bigquery/v2
+google.golang.org/cloud/compute/metadata
