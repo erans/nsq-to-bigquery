@@ -9,12 +9,11 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/nsqio/go-nsq"
-	"github.com/nsqio/nsq/internal/app"
-	"github.com/nsqio/nsq/internal/version"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"golang.org/x/oauth2/jwt"
@@ -26,6 +25,20 @@ const (
 	bigQueryScope = "https://www.googleapis.com/auth/bigquery"
 )
 
+// StringArray implements the Set function so that it can be used with the flag lib
+type StringArray []string
+
+// Set add's the value of s to the end of the array
+func (a *StringArray) Set(s string) error {
+	*a = append(*a, s)
+	return nil
+}
+
+// Returns a combined string using "Join" of all values of the array
+func (a *StringArray) String() string {
+	return strings.Join(*a, ",")
+}
+
 var (
 	showVersion     = flag.Bool("version", false, "print version string")
 	topic           = flag.String("topic", "", "NSQ topic")
@@ -36,8 +49,8 @@ var (
 	maxInFlight     = flag.Int("max-in-flight", 200, "max number of messages to allow in flight")
 	credentialsFile = flag.String("credentials-file", "", "credentials file to access BigQuery")
 
-	nsqdTCPAddrs     = app.StringArray{}
-	lookupdHTTPAddrs = app.StringArray{}
+	nsqdTCPAddrs     = StringArray{}
+	lookupdHTTPAddrs = StringArray{}
 
 	bq *bigquery.Service
 )
@@ -132,7 +145,9 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("nsq_to_bigquery/%s nsq/%s go-nsq/%s", ver, version.Binary, nsq.VERSION)
+		// I hard coded (for now) the NSQ version because of an issue with
+		// Go 1.5 and its inability to reference packages under "internal"
+		fmt.Printf("nsq_to_bigquery/%s nsq/%s go-nsq/%s", ver, "0.3.5", nsq.VERSION)
 		return
 	}
 
@@ -174,7 +189,9 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	cfg.UserAgent = fmt.Sprintf("nsq_to_bigquery/%s nsq/%s go-nsq/%s", ver, version.Binary, nsq.VERSION)
+	// I hard coded (for now) the NSQ version because of an issue with
+	// Go 1.5 and its inability to reference packages under "internal"
+	cfg.UserAgent = fmt.Sprintf("nsq_to_bigquery/%s nsq/%s go-nsq/%s", ver, "0.3.5", nsq.VERSION)
 	cfg.MaxInFlight = *maxInFlight
 
 	consumer, err := nsq.NewConsumer(*topic, *channel, cfg)
