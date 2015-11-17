@@ -1,4 +1,5 @@
 ![nsq to bigquery logo](http://i1.wp.com/eran.sandler.co.il/wp-content/uploads/2015/11/nsq-to-bigquery.png?resize=300%2C117)
+
 [![Build Status](https://travis-ci.org/erans/nsq-to-bigquery.svg)](https://travis-ci.org/erans/nsq-to-bigquery)
 
 # nsq-to-bigquery
